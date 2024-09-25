@@ -1,8 +1,7 @@
-﻿using ConsumidorApi.Entities;
-using ConsumidorApi.Entities.Services;
-using ConsumindoApiAluno.Entities.Services;
+﻿using ConsumidorApi.Controllers;
+using ConsumidorApi.Controllers.Car;
 
-namespace ConsumindoApi
+namespace ConsumidorApi
 {
     class Program
     {
@@ -12,54 +11,70 @@ namespace ConsumindoApi
 
             while (key == true)
             {
-                Console.WriteLine("Informe a escolha: ");
+                Console.WriteLine("\nInforme a escolha: ");
+                Console.WriteLine("1 - Buscar Staff ");
+                Console.WriteLine("2 - Buscar Carro: ");
+                Console.WriteLine("3 - Listar Staffs: ");
+                Console.WriteLine("4 - Listar Carro: ");
+                Console.WriteLine("5 - Criar Car: ");
+                Console.WriteLine("6 - Criar Staff: ");
+                Console.WriteLine("7 - Buscar Carro por Id da Staff: ");
+                Console.WriteLine("8 - Buscar Staff por Id da Carro: ");
+                Console.WriteLine("9 - DELETAR Staff por Id: ");
+                Console.WriteLine("10 - DELETAR Carro por Id: ");
+                Console.WriteLine("\n0 - Sair");
+
+
                 if (!int.TryParse(Console.ReadLine(), out int choice))
                 {
-                    Console.WriteLine("Entrada inválida, insira um número.");
+                    Console.WriteLine("\nEntrada inválida, insira um número.");
                     continue;
                 }
 
                 switch (choice)
                 {
                     case 1:
-                        await buscarStaff(); // Utilizando await
+                        await StaffController.buscarStaff();
                         break;
                     case 2:
-                        // code block
+                        await CarController.buscarCar();
                         break;
                     case 3:
+                        await StaffController.ListarStaff();
+                        break;
+                    case 4:
+                        await CarController.ListarCar();
+                        break; 
+                    case 5:
+                        await CarController.CriarCar();
+                        break;
+                    case 6:
+                        await StaffController.CriarStaff(); 
+                        break;  
+                    case 7:
+                        await CarController.BuscarCarPorIdStaff(); 
+                        break;
+                    case 8:
+                        await StaffController.BuscarStaffPorIdCar(); 
+                        break;
+                    case 9:
+                        await StaffController.DeletarStaff();
+                        break;
+                    case 10:
+                        await CarController.DeletarCar();
+                        break;
+
+                    case 0:
                         key = false;
                         break;
+
                     default:
-                        Console.WriteLine("Resposta inválida.");
+                        Console.WriteLine("\nResposta inválida.");
                         break;
                 }
             }
         }
 
-        public static async Task buscarStaff() // async Task para assíncrono correto
-        {
-            Console.WriteLine("Informe o ID: ");
-            if (!Guid.TryParse(Console.ReadLine(), out Guid Id))
-            {
-                Console.WriteLine("ID inválido.");
-                return;
-            }
-
-            StaffServices staffServices = new StaffServices();
-
-            StaffModel staffEncontrado = await staffServices.Integracao(Id);
-
-            if (staffEncontrado != null && !staffEncontrado.verificacao)
-            {
-                Console.WriteLine("Staff Encontrada");
-                Console.WriteLine("Nome: " + staffEncontrado.Name);
-                Console.WriteLine("Endereço: " + staffEncontrado.Address);
-            }
-            else
-            {
-                Console.WriteLine("Staff não encontrada!");
-            }
-        }
     }
 }
+
